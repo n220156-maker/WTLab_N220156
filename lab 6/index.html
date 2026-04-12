@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Support - OAuth Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <header>
+        <div class="logo">
+            <!-- Dynamically rendering Name + ID logic in UI as per requirements -->
+            <span class="name">Hema</span><span class="id">sundar 12345</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.php">Customer Support</a>
+
+
+
+            <a href="student.php">Student Support (Firebase)</a>
+            <?php if(isLoggedIn()): ?>
+                <a href="logout.php">Logout</a>
+            <?php endif; ?>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <h1>Customer Support Portal</h1>
+        <p>Welcome to our support division. Please log in to access your tickets, view support resources, or contact an agent.</p>
+
+
+        <?php if(isLoggedIn()): ?>
+            <div class="user-card">
+                <?php
+                    $user = $_SESSION['user'];
+                    $avatar = isset($user['picture']) ? $user['picture'] : (isset($user['avatar_url']) ? $user['avatar_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($user['name']));
+                ?>
+                <img src="<?php echo htmlspecialchars($avatar); ?>" alt="User Avatar">
+                <div class="user-info">
+                    <h3><?php echo htmlspecialchars($user['name']); ?></h3>
+                    <p><?php echo htmlspecialchars($user['email'] ?? 'No email provided'); ?></p>
+               
+                    <p><small>Logged in via <?php echo htmlspecialchars($_SESSION['auth_provider']); ?></small></p>
+                </div>
+            </div>
+            <div style="margin-top:30px;">
+               <a href="logout.php" class="btn btn-google" style="margin: 0 auto;">Logout</a>
+            </div>
+        <?php else: ?>
+            <div class="auth-buttons">
+                <!-- Task 1: Google Login -->
+                <a href="<?php echo htmlspecialchars($googleLoginUrl); ?>" class="btn btn-google">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+                    Login with Google
+                </a>
+
+
+                <!-- Task 3: GitHub Login -->
+                <a href="<?php echo htmlspecialchars($githubLoginUrl); ?>" class="btn btn-github">
+                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+                    Login with GitHub
+                </a>
+ </div>
+        <?php endif; ?>
+    </div>
+
+
+</body>
+</html>
